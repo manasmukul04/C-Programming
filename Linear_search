@@ -1,0 +1,40 @@
+#include <stdio.h>
+#include <stdlib.h>
+void search(int *arr, int size)
+{
+    int search, count = 0;
+    printf("Enter the element to be searched.\n");
+    scanf("%d", &search);
+    for (int i = 0; i < size; i++)
+    {
+        if (search == arr[i])
+            count++;
+    }
+    if (count == 0)
+        printf("Element not found int the list.\n");
+    else
+        printf("Element found in the list and its occurence is %d times.\n", count);
+}
+void display(int *arr, int size)
+{
+    for (int i = 0; i < size; i++)
+        printf("%d ", arr[i]);
+    printf("\n");
+}
+int main()
+{
+    printf("Implementing Linear search to search an element from an array.\n");
+    int size;
+    printf("Enter the size: ");
+    scanf("%d", &size);
+    int *arr;
+    arr = (int *)malloc(size * sizeof(int));
+    printf("Enter the elements in the array.\n");
+    for (int i = 0; i < size; i++)
+    {
+        scanf("%d", &arr[i]);
+    }
+    printf("Displaying original array.\n");
+    display(arr, size);
+    search(arr, size);
+}
