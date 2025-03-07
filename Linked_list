@@ -1,0 +1,175 @@
+#include <stdio.h>
+#include <stdlib.h>
+typedef struct node
+{
+	int data;
+	struct node *next;
+} node;
+typedef struct link
+{
+	node *front, *rear;
+} list;
+list insert(list l1, int data)
+{
+	node *temp = (node *)malloc(sizeof(node));
+	temp->data = data;
+	temp->next = NULL;
+	if (l1.front == NULL)
+	{
+		l1.front = temp;
+		l1.rear = temp;
+	}
+	else
+	{
+		temp->next = l1.front;
+		l1.front = temp;
+	}
+	return l1;
+}
+list insert_at_beg(list l1, int data)
+{
+	return insert(l1, data);
+}
+list insert_at_end(list l1, int data)
+{
+	node *temp = (node *)malloc(sizeof(node));
+	temp->data = data;
+	temp->next = NULL;
+	if (l1.front == NULL)
+	{
+		l1.front = temp;
+		l1.rear = temp;
+	}
+	l1.rear->next = temp;
+	l1.rear = temp;
+	return l1;
+}
+list insert_at_random(list l1, int data)
+{
+	node *temp = (node *)malloc(sizeof(node));
+	temp->data = data;
+	temp->next = NULL;
+	node *dup = l1.front;
+	int position, count = 1;
+	printf("Enter the position of insertion.\n");
+	scanf("%d", &position);
+	if (position < count)
+	{
+		printf("Invalid position.\n");
+		return l1;
+	}
+	if (position == count)
+		return insert(l1, data);
+	while (dup != NULL)
+	{
+		if (position - 1 == count)
+		{
+			temp->next = dup->next;
+			dup->next = temp;
+		}
+		dup = dup->next;
+		count++;
+	}
+	if (position > count)
+	{
+		printf("Invalid position.\n");
+		return l1;
+	}
+	return l1;
+}
+list del_at_beg(list l1)
+{
+	node *temp = (node *)malloc(sizeof(node));
+	temp = l1.front;
+	l1.front = l1.front->next;
+	free(temp);
+	return l1;
+}
+list del_at_end(list l1)
+{
+	node *temp = (node *)malloc(sizeof(node));
+	temp = l1.front;
+	while (temp->next != l1.rear)
+		temp = temp->next;
+	temp->next = NULL;
+	l1.rear = temp;
+	free(temp);
+	return l1;
+}
+list del_speci_element(int element, list l1)
+{
+	node *dup = l1.front;
+	int count1 = 1, count2 = 1;
+	while (dup != NULL)
+	{
+		if(dup->data == element)
+			break;
+		dup = dup->next;
+		count1++;
+	}
+	if (dup->data != element)
+	{
+		printf("Element not present.\n");
+		return l1;
+	}
+	dup = l1.front;
+	while (dup != NULL)
+	{
+		count2++;
+		if(count1 == count2)
+			dup->next = dup->next->next;
+		else
+			dup = dup->next;
+	}
+	return l1;
+}
+void display(list l1)
+{
+	printf("Elements in the list are:\n");
+	node *temp = l1.front;
+	while (temp != NULL)
+	{
+		printf("%d ", temp->data);
+		temp = temp->next;
+	}
+	printf("\n");
+}
+int main()
+{
+	list l1;
+	l1.front = NULL;
+	l1.rear = NULL;
+	int number, element;
+	printf("Enter the no. of elements to be inserted.\n");
+	scanf("%d", &number);
+	int arr[number];
+	printf("Enter the elements.\n");
+	for (int i = 0; i < number; i++)
+	{
+		scanf("%d", &arr[i]);
+		l1 = insert(l1, arr[i]);
+	}
+	display(l1);
+	printf("Enter the element to be inserted at the beginning.\n");
+	scanf("%d", &element);
+	l1 = insert_at_beg(l1, element);
+	display(l1);
+	printf("Enter the element to be inserted at the end.\n");
+	scanf("%d", &element);
+	l1 = insert_at_end(l1, element);
+	display(l1);
+	printf("Enter the element to be inserted at any specific positions.\n");
+	scanf("%d", &element);
+	l1 = insert_at_random(l1, element);
+	display(l1);
+	printf("The elments after deletion of the beginning element.\n");
+	l1 = del_at_beg(l1);
+	display(l1);
+	l1 = del_at_end(l1);
+	printf("The elments after deletion of the end element.\n");
+	display(l1);
+	printf("Enter the element to be deleted.\n");
+	scanf("%d", &element);
+	l1 = del_speci_element(element, l1);
+	display(l1);
+}
